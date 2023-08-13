@@ -28,7 +28,15 @@ namespace IL2X.Core
 			moduleReferences = new List<Module>();
 			foreach (var moduleReference in cecilModule.ModuleReferences)
 			{
-				var found = assembly.modules.First(x => x.cecilModule == moduleReference);
+				var found = assembly.modules.FirstOrDefault(x => x.cecilModule == moduleReference);
+
+				if(found == null)
+				{
+					Console.WriteLine($"[Module] Skipping module {moduleReference.Name}: Not found or native reference");
+
+					continue;
+				}
+
 				moduleReferences.Add(found);
 			}
 
