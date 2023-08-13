@@ -171,10 +171,87 @@ namespace IL2X.Core.Jit
 						break;
 					}
 
-					// ===================================
-					// loads
-					// ===================================
-					case Code.Ldc_I4_0: Ldc_X(op, 0); break;
+                    case Code.And:
+                    {
+                        var p2 = StackPop();
+                        var p1 = StackPop();
+                        var evalVarType = GetArithmaticResultType(p1.obj, p2.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+						AddASMOp(new ASMArithmatic(ASMCode.BitwiseAnd, OperandToASMOperand(p1.obj), OperandToASMOperand(p2.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Not:
+                    {
+                        var p1 = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetArithmaticResultType(p1.obj));
+
+                        AddASMOp(new ASMArithmatic(ASMCode.BitwiseNot, OperandToASMOperand(p1.obj), null, evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Or:
+                    {
+                        var p2 = StackPop();
+                        var p1 = StackPop();
+                        var evalVarType = GetArithmaticResultType(p1.obj, p2.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+                        AddASMOp(new ASMArithmatic(ASMCode.BitwiseOr, OperandToASMOperand(p1.obj), OperandToASMOperand(p2.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Xor:
+                    {
+                        var p2 = StackPop();
+                        var p1 = StackPop();
+                        var evalVarType = GetArithmaticResultType(p1.obj, p2.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+                        AddASMOp(new ASMArithmatic(ASMCode.BitwiseXor, OperandToASMOperand(p1.obj), OperandToASMOperand(p2.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Shl:
+                    {
+                        var shiftAmount = StackPop();
+                        var value = StackPop();
+                        var evalVarType = GetArithmaticResultType(value.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+                        AddASMOp(new ASMArithmatic(ASMCode.ShiftLeft, OperandToASMOperand(value.obj), OperandToASMOperand(shiftAmount.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Shr:
+                    {
+                        var shiftAmount = StackPop();
+                        var value = StackPop();
+                        var evalVarType = GetArithmaticResultType(value.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+                        AddASMOp(new ASMArithmatic(ASMCode.ShiftRight, OperandToASMOperand(value.obj), OperandToASMOperand(shiftAmount.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    case Code.Shr_Un:
+                    {
+                        var shiftAmount = StackPop();
+                        var value = StackPop();
+                        var evalVarType = GetArithmaticResultType(value.obj);
+                        var evalVar = GetEvalStackVar(evalVarType);
+                        AddASMOp(new ASMArithmatic(ASMCode.ShiftRightUnsigned, OperandToASMOperand(value.obj), OperandToASMOperand(shiftAmount.obj), evalVar));
+                        StackPush(op, evalVar);
+                        break;
+                    }
+
+                    // ===================================
+                    // loads
+                    // ===================================
+                    case Code.Ldc_I4_0: Ldc_X(op, 0); break;
 					case Code.Ldc_I4_1: Ldc_X(op, 1); break;
 					case Code.Ldc_I4_2: Ldc_X(op, 2); break;
 					case Code.Ldc_I4_3: Ldc_X(op, 3); break;
@@ -673,7 +750,24 @@ namespace IL2X.Core.Jit
 			}
 		}
 
-		private TypeReference GetArithmaticResultType(object value1, object value2)
+        private TypeReference GetArithmaticResultType(object value)
+        {
+            if (value is VariableReference value_Var) return value_Var.VariableType;
+            if (value is ParameterReference value_Param) return value_Param.ParameterType;
+            if (value is Int16) return GetTypeSystem().Int16;
+            if (value is Int32) return GetTypeSystem().Int32;
+            if (value is Int64) return GetTypeSystem().Int64;
+            if (value is UInt16) return GetTypeSystem().UInt16;
+            if (value is UInt32) return GetTypeSystem().UInt32;
+            if (value is UInt64) return GetTypeSystem().UInt64;
+            if (value is Single) return GetTypeSystem().Single;
+            if (value is Double) return GetTypeSystem().Double;
+            if (value is ASMSizeOf) return GetTypeSystem().Int32;
+            if (value is ASMEvalStackLocal local) return local.type;
+            throw new NotImplementedException("Unsupported arithmatic object: " + value.GetType().ToString());
+        }
+
+        private TypeReference GetArithmaticResultType(object value1, object value2)
 		{
 			TypeReference GetType(object value)
 			{
@@ -688,7 +782,8 @@ namespace IL2X.Core.Jit
 				if (value is Single) return GetTypeSystem().Single;
 				if (value is Double) return GetTypeSystem().Double;
 				if (value is ASMSizeOf) return GetTypeSystem().Int32;
-				throw new NotImplementedException("Unsupported arithmatic object: " + value.GetType().ToString());
+                if (value is ASMEvalStackLocal local) return local.type;
+                throw new NotImplementedException("Unsupported arithmatic object: " + value.GetType().ToString());
 			}
 
 			TypeReference LowestType(TypeReference type)

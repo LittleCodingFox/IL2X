@@ -23,9 +23,16 @@ namespace IL2X.Core
 		Sub,
 		Mul,
 		Div,
+        BitwiseAnd,
+        BitwiseOr,
+        BitwiseXor,
+        BitwiseNot,
+        ShiftLeft,
+        ShiftRight,
+        ShiftRightUnsigned,
 
-		// writes
-		WriteLocal,
+        // writes
+        WriteLocal,
 		WriteField,
 		InitObject,
 
