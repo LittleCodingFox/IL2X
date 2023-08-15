@@ -18,6 +18,8 @@ namespace IL2X.Core
 
 		SizeOf,
 
+		Cast,
+
 		// arithmatic
 		Add,
 		Sub,
@@ -55,7 +57,10 @@ namespace IL2X.Core
 		CmpLess_1_0,
 
 		// invoke
-		CallMethod
+		CallMethod,
+
+		// instancing
+		IsInst
 	}
 
 	public class ASMObject
@@ -332,7 +337,51 @@ namespace IL2X.Core
 		}
 	}
 
-	public class ASMSizeOf : ASMObject
+	public class ASMCast : ASMObject
+	{
+		public ASMObject value;
+		public TypeReference castType;
+		public IASMLocal resultLocal;
+
+		public ASMCast(ASMObject value, TypeReference castType, IASMLocal resultLocal) : base(ASMCode.Cast)
+		{
+			this.value = value;
+			this.castType = castType;
+			this.resultLocal = resultLocal;
+		}
+
+        public override IASMLocal GetResultLocal() => resultLocal;
+        public override void SetResultLocal(IASMLocal local) => resultLocal = local;
+    }
+
+    public class ASMIsInst : ASMObject
+    {
+        public ASMObject value;
+		public TypeDefinition typeDefinition;
+		public TypeReference typeReference;
+        public IASMLocal resultLocal;
+
+        public ASMIsInst(ASMObject value, TypeDefinition typeDefinition, IASMLocal resultLocal)
+        : base(ASMCode.IsInst)
+        {
+            this.value = value;
+            this.typeDefinition = typeDefinition;
+            this.resultLocal = resultLocal;
+        }
+
+        public ASMIsInst(ASMObject value, TypeReference typeReference, IASMLocal resultLocal)
+        : base(ASMCode.IsInst)
+        {
+            this.value = value;
+            this.typeReference = typeReference;
+            this.resultLocal = resultLocal;
+        }
+
+        public override IASMLocal GetResultLocal() => resultLocal;
+        public override void SetResultLocal(IASMLocal local) => resultLocal = local;
+    }
+
+    public class ASMSizeOf : ASMObject
 	{
 		public TypeReference type;
 

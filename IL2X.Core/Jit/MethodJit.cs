@@ -3,8 +3,6 @@ using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IL2X.Core.Jit
 {
@@ -263,12 +261,94 @@ namespace IL2X.Core.Jit
 					case Code.Ldc_I4_M1: Ldc_X(op, -1); break;
 					case Code.Ldc_I4:
 					case Code.Ldc_I4_S:
-					{
-						Ldc_X(op, (ValueType)op.Operand);
+                    case Code.Ldc_R4:
+                    case Code.Ldc_R8:
+                    {
+                        Ldc_X(op, (ValueType)op.Operand);
 						break;
 					}
 
-					case Code.Ldloc_0: Ldloc_X(op, 0); break;
+                    case Code.Ldind_U1:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().Byte);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().Byte, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Ldind_U2:
+					{
+						var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().UInt16);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().UInt16, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+					}
+
+                    case Code.Ldind_U4:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().UInt32);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().UInt32, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Ldind_I1:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().SByte);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().SByte, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Ldind_I2:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().Int16);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().Int16, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Ldind_I4:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().Int32);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().Int32, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Ldstr:
+					{
+                        StackPush(op, op.Operand);
+
+                        break;
+                    }
+
+                    case Code.Ldnull:
+                    {
+                        StackPush(op, null);
+
+                        break;
+                    }
+
+                    case Code.Ldloc_0: Ldloc_X(op, 0); break;
 					case Code.Ldloc_1: Ldloc_X(op, 1); break;
 					case Code.Ldloc_2: Ldloc_X(op, 2); break;
 					case Code.Ldloc_3: Ldloc_X(op, 3); break;
@@ -555,10 +635,41 @@ namespace IL2X.Core.Jit
 						break;
 					}
 
-					// ===================================
-					// unsupported
-					// ===================================
-					default:
+                    // ===================================
+                    // instancing
+                    // ===================================
+                    case Code.Isinst:
+                    {
+						var p = StackPop();
+
+                        if (p.obj is ParameterDefinition pdef)
+						{
+							var parameter = asmParameters[pdef.Index];
+                            var targetType = op.Operand as TypeDefinition;
+                            var evalVar = GetEvalStackVar(targetType);
+                            AddASMOp(new ASMIsInst(parameter, targetType, evalVar));
+                            StackPush(op, evalVar);
+                        }
+						else if(p.obj is VariableDefinition vdef)
+						{
+							var variable = asmLocals[vdef.Index];
+                            var targetType = op.Operand as TypeReference;
+                            var evalVar = GetEvalStackVar(targetType);
+                            AddASMOp(new ASMIsInst(variable, targetType, evalVar));
+                            StackPush(op, evalVar);
+                        }
+                        else
+						{
+                            throw new NotImplementedException("IL instruction Isinst has unexpected parameter type: " + p.obj.GetType().Name);
+                        }
+
+                        break;
+                    }
+
+                    // ===================================
+                    // unsupported
+                    // ===================================
+                    default:
 					{
 						throw new NotImplementedException("Unsupported IL instruction: " + op.ToString());
 					}
@@ -576,6 +687,11 @@ namespace IL2X.Core.Jit
 
 		private ASMObject OperandToASMOperand(object obj)
 		{
+			if(obj == null)
+			{
+				return new ASMPrimitiveLiteral(null);
+			}
+
 			var type = obj.GetType();
 
 			// primitive
@@ -586,7 +702,8 @@ namespace IL2X.Core.Jit
 				type == typeof(Int16) || type == typeof(UInt16) ||
 				type == typeof(Int16) || type == typeof(UInt16) ||
 				type == typeof(Int32) || type == typeof(UInt32) ||
-				type == typeof(Int64) || type == typeof(UInt64)
+				type == typeof(Int64) || type == typeof(UInt64) ||
+				type == typeof(Single) || type == typeof(Double)
 			)
 			{
 				return new ASMPrimitiveLiteral(obj);
@@ -783,6 +900,8 @@ namespace IL2X.Core.Jit
 				if (value is Double) return GetTypeSystem().Double;
 				if (value is ASMSizeOf) return GetTypeSystem().Int32;
                 if (value is ASMEvalStackLocal local) return local.type;
+				if (value is ASMField field) return field.type;
+
                 throw new NotImplementedException("Unsupported arithmatic object: " + value.GetType().ToString());
 			}
 

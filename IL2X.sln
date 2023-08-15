@@ -1,12 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IL2X.CLI", "IL2X.CLI\IL2X.CLI.csproj", "{895CAA7E-07D0-41EC-ABAA-68DB6B08668E}"
 	ProjectSection(ProjectDependencies) = postProject
-		{D11E7380-022D-4E32-8F4D-AA929E349A6F} = {D11E7380-022D-4E32-8F4D-AA929E349A6F}
+		{976F2EDA-79CD-4B36-B805-E5506C86DB88} = {976F2EDA-79CD-4B36-B805-E5506C86DB88}
 		{D0FB03BE-81EA-45ED-B0CE-47ED4D797E8F} = {D0FB03BE-81EA-45ED-B0CE-47ED4D797E8F}
+		{D11E7380-022D-4E32-8F4D-AA929E349A6F} = {D11E7380-022D-4E32-8F4D-AA929E349A6F}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IL2X.Core", "IL2X.Core\IL2X.Core.csproj", "{5EE0E9D0-BD01-48FE-BF41-162CA6DF4AD7}"
@@ -16,6 +17,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IL2X.CoreLib", "IL2X.CoreLib\IL2X.CoreLib.csproj", "{D11E7380-022D-4E32-8F4D-AA929E349A6F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTraceBenchmark_JIT", "RayTraceBenchmark\RayTraceBenchmark_JIT.csproj", "{DE0463EB-ADCD-4CD2-9BF2-0CA04ED56168}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleTest1", "SimpleTest1\SimpleTest1.csproj", "{976F2EDA-79CD-4B36-B805-E5506C86DB88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +46,10 @@ Global
 		{DE0463EB-ADCD-4CD2-9BF2-0CA04ED56168}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE0463EB-ADCD-4CD2-9BF2-0CA04ED56168}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE0463EB-ADCD-4CD2-9BF2-0CA04ED56168}.Release|Any CPU.Build.0 = Release|Any CPU
+		{976F2EDA-79CD-4B36-B805-E5506C86DB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{976F2EDA-79CD-4B36-B805-E5506C86DB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{976F2EDA-79CD-4B36-B805-E5506C86DB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{976F2EDA-79CD-4B36-B805-E5506C86DB88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

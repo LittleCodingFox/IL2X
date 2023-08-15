@@ -129,7 +129,7 @@ namespace IL2X.CLI
                     solution.Optimize();
                 }
 
-				var emitter = new Emmiter_C(solution);
+				var emitter = new Emiter_Cpp(solution);
 
 				emitter.Translate(Path.Combine(outPath, "IL2XOutput"));
 			}
