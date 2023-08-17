@@ -5,6 +5,7 @@ using System.IO;
 using System;
 using System.Text;
 using IL2X.Core.Jit;
+using System.Linq;
 
 namespace IL2X.Core.Emitters
 {
@@ -136,25 +137,6 @@ namespace IL2X.Core.Emitters
                 }
             }
 
-            // write header type-method file
-            foreach (var type in module.allTypes)
-            {
-                string filename = FormatTypeFilename(type.typeReference.FullName);
-                using (var stream = new FileStream(Path.Combine(outputDirectory, filename + "_Methods.hpp"), FileMode.Create, FileAccess.Write, FileShare.Read))
-                using (var writer = new StreamWriter(stream))
-                {
-                    activeWriter = writer;
-
-                    // write standard header
-                    WriteLine("#pragma once");
-                    WriteLine($"#include \"{filename}.hpp\"");
-                    WriteLine();
-
-                    // write method definitions
-                    WriteTypeMethodDefinition(type);
-                }
-            }
-
             // write code file
             foreach (var type in module.allTypes)
             {
@@ -165,7 +147,7 @@ namespace IL2X.Core.Emitters
                     activeWriter = writer;
 
                     // write type field metadata
-                    WriteLine($"#include \"{filename}_Methods.hpp\"");
+                    WriteLine($"#include \"{filename}.hpp\"");
                     IncludeSTD(type);
 
                     // write type method metadata
@@ -234,19 +216,58 @@ namespace IL2X.Core.Emitters
             {
                 if (type.fields.Count != 0 || !type.isValueType)
                 {
-                    WriteLine($"class {typename}");
-                    WriteLine("{");
-                    WriteLine("public:");
+                    if(type.isValueType)
+                    {
+                        WriteLine($"struct {typename}");
+                        WriteLine("{");
+                    }
+                    else
+                    {
+                        WriteLine($"class {typename}");
+                        WriteLine("{");
+                        WriteLine("public:");
+                    }
                     AddTab();
                     if (!type.isValueType) WriteLineTab("void* RuntimeType;");
                     WriteTypeNonStaticFieldDefinition(type);
 
                     // write method signatures
                     WriteLine();
-                    foreach (var method in type.methods)
+
+                    var publicMethods = type.methods.Where(x => x.methodDefinition.IsPublic).ToList();
+                    var privateMethods = type.methods.Where(x => x.methodDefinition.IsPrivate).ToList();
+                    var protectedMethods = type.methods.Where(x => x.methodDefinition.Attributes.HasFlag(MethodAttributes.Family) &&
+                        x.methodDefinition.IsPrivate == false &&
+                        x.methodDefinition.IsPublic == false).ToList();
+
+                    void Handle(List<MethodJit> methods)
                     {
-                        WriteMethodDeclarationSignature(method);
-                        WriteLine(";");
+                        foreach (var method in methods)
+                        {
+                            WriteMethodDeclarationSignature(method);
+                            WriteLine(";");
+                        }
+                    }
+
+                    if(publicMethods.Count != 0)
+                    {
+                        WriteLine("public:");
+
+                        Handle(publicMethods);
+                    }
+
+                    if (privateMethods.Count != 0)
+                    {
+                        WriteLine("private:");
+
+                        Handle(privateMethods);
+                    }
+
+                    if (protectedMethods.Count != 0)
+                    {
+                        WriteLine("protected:");
+
+                        Handle(protectedMethods);
                     }
 
                     RemoveTab();
@@ -264,11 +285,41 @@ namespace IL2X.Core.Emitters
 
         private void WriteTypeNonStaticFieldDefinition(TypeJit type)
         {
-            foreach (var field in type.fields)
+            var publicFields = type.fields.Where(x => x.field.IsPublic).ToList();
+            var privateFields = type.fields.Where(x => x.field.IsPrivate).ToList();
+            var protectedFields = type.fields.Where(x => x.field.Attributes.HasFlag(FieldAttributes.Family) &&
+                x.field.IsPrivate == false &&
+                x.field.IsPublic == false).ToList();
+
+            void Handle(List<FieldJit> fields)
             {
-                if (field.field.IsStatic) continue;
-                WriteTab(GetTypeReferenceName(field.resolvedFieldType));
-                WriteLine($" {GetFieldName(field.field)};");
+                foreach (var field in fields)
+                {
+                    if (field.field.IsStatic)
+                    {
+                        continue;
+                    }
+
+                    WriteTab(GetTypeReferenceName(field.resolvedFieldType));
+
+                    WriteLine($" {GetFieldName(field.field)};");
+                }
+            }
+
+            Handle(publicFields);
+
+            if(privateFields.Count != 0)
+            {
+                WriteLine("private:");
+
+                Handle(privateFields);
+            }
+
+            if (protectedFields.Count != 0)
+            {
+                WriteLine("protected:");
+
+                Handle(protectedFields);
             }
         }
 
@@ -355,6 +406,7 @@ namespace IL2X.Core.Emitters
                 WriteLine();
                 WriteLine("{");
                 AddTab();
+
                 if (method.asmOperations != null && method.asmOperations.Count != 0)
                 {
                     WriteMethodLocals(method);
@@ -364,8 +416,8 @@ namespace IL2X.Core.Emitters
                 {
                     // write implementation detail
                     if (method.methodDefinition.IsInternalCall) WriteMethodImplementationDetail(method);
-
                 }
+
                 RemoveTab();
                 WriteLine("}");
             }
@@ -452,6 +504,10 @@ namespace IL2X.Core.Emitters
                             {
                                 result = GetParameterName(p) + GetTypeReferenceMemberAccessor(p.ParameterType) + result;
                             }
+                            else if(field.self is VariableDefinition v)
+                            {
+                                result = GetLocalVariableName(v) + GetTypeReferenceMemberAccessor(v.VariableType) + result;
+                            }
                             else
                             {
                                 throw new Exception("Unsupported field accesor: " + field.self.ToString());
@@ -511,7 +567,14 @@ namespace IL2X.Core.Emitters
                     {
                         var cast = (ASMCast)op;
 
-                        return $"dynamic_cast<{GetTypeFullName(cast.castType)}>({GetOperationValue(cast.value)})";
+                        if(cast.castType.IsValueType)
+                        {
+                            return $"({GetTypeFullName(cast.castType)}){GetOperationValue(cast.value)}";
+                        }
+                        else
+                        {
+                            return $"dynamic_cast<{GetTypeFullName(cast.castType)}>({GetOperationValue(cast.value)})";
+                        }
                     }
 
                 case ASMCode.SizeOf:
@@ -609,9 +672,58 @@ namespace IL2X.Core.Emitters
                 case ASMCode.InitObject:
                     {
                         var writeOp = (ASMInitObject)op;
-                        var o = GetOperationValue(writeOp.obj);
 
-                        return $"IL2X_TypeSystem_Init({o})";
+                        if(writeOp.obj != null)
+                        {
+                            var o = GetOperationValue(writeOp.obj);
+
+                            return $"IL2X_TypeSystem_Init({o})";
+                        }
+                        else if(writeOp.field != null)
+                        {
+                            return $"{GetTypeFullName(writeOp.field.DeclaringType)}::{GetFieldFullName(writeOp.field)} = 0";
+                        }
+                        else
+                        {
+                            throw new NotImplementedException($"InitObject requires either field or object");
+                        }
+                    }
+
+                case ASMCode.LoadStaticField:
+                    {
+                        var loadOp = (ASMLoadStaticField)op;
+
+                        return $"{GetTypeFullName(loadOp.field.DeclaringType)}::{GetFieldFullName(loadOp.field)}";
+                    }
+
+                case ASMCode.StoreStaticField:
+                    {
+                        var storeOp = (ASMStoreStaticField)op;
+
+                        return $"{GetTypeFullName(storeOp.field.DeclaringType)}::{GetFieldFullName(storeOp.field)} = {GetOperationValue(storeOp.value)}";
+                    }
+
+                case ASMCode.Localloc:
+                    {
+                        var locallocOp = (ASMLocalloc)op;
+
+                        return $"new uint8_t[{GetOperationValue(locallocOp.count)}]";
+                    }
+
+                case ASMCode.Store:
+                    {
+                        var storeOp = (ASMStore)op;
+
+                        if(storeOp.parameter != null)
+                        {
+                            return $"{GetParameterName(storeOp.parameter)} = {GetOperationValue(storeOp.value)}";
+                        }
+                        else if(storeOp.evalLocal != null)
+                        {
+                            return $"{GetLocalEvalVariableName(storeOp.evalLocal.index)} = {GetOperationValue(storeOp.evalLocal)}";
+                        }
+
+                        throw new NotImplementedException("Unexpected value for Store");
                     }
 
                 // ===================================
@@ -733,6 +845,26 @@ namespace IL2X.Core.Emitters
                         }
                     }
 
+                case ASMCode.NewObj:
+                    {
+                        var newObj = (ASMNewObj)op;
+
+                        var result = new StringBuilder();
+
+                        result.Append($"{GetTypeFullName(newObj.type)}(");
+
+                        for(var i = 0; i < newObj.parameters.Count; i++)
+                        {
+                            result.Append(GetOperationValue(newObj.parameters[i]));
+
+                            if (i + 1 < newObj.parameters.Count) result.Append(", ");
+                        }
+
+                        result.Append(")");
+
+                        return result.ToString();
+                    }
+
                 // ===================================
                 // invoke
                 // ===================================
@@ -750,6 +882,13 @@ namespace IL2X.Core.Emitters
                         }
                         result.Append(")");
                         return result.ToString();
+                    }
+
+                case ASMCode.Throw:
+                    {
+                        var throwOp = (ASMThrow)op;
+
+                        return $"throw {GetOperationValue(throwOp.exception)}";
                     }
 
                 default: throw new NotImplementedException("Operation not implimented: " + op.code.ToString());
@@ -771,7 +910,7 @@ namespace IL2X.Core.Emitters
 
         public static string GetTypeFullName(TypeReference type)
         {
-            return $"t_{GetScopeName(type.Scope)}_{GetTypeName(type)}";
+            return $"{GetScopeName(type.Scope)}_{GetTypeName(type)}";
         }
 
         private string GetTypeReferenceName(TypeReference type)
@@ -844,8 +983,7 @@ namespace IL2X.Core.Emitters
                 name += "_";
             }
 
-            int overload = GetMethodOverloadIndex(method);
-            return $"{name}_{overload}";
+            return $"{name}";
         }
 
         private static string GetMethodName(MethodReference method)
@@ -863,8 +1001,7 @@ namespace IL2X.Core.Emitters
                 name += "_";
             }
 
-            int overload = GetMethodOverloadIndex(method);
-            return $"{GetTypeFullName(method.DeclaringType)}::{name}_{overload}";
+            return $"{GetTypeFullName(method.DeclaringType)}::{name}";
         }
 
         private string GetJumpIndexName(int jumpIndex)

@@ -20,7 +20,16 @@ namespace IL2X.Core
 
 		Cast,
 
-		// arithmatic
+		Throw,
+
+		Localloc,
+
+		StoreStaticField,
+		LoadStaticField,
+
+		Store,
+
+		// arithmethic
 		Add,
 		Sub,
 		Mul,
@@ -60,10 +69,11 @@ namespace IL2X.Core
 		CallMethod,
 
 		// instancing
-		IsInst
-	}
+		IsInst,
+        NewObj,
+    }
 
-	public class ASMObject
+    public class ASMObject
 	{
 		public readonly ASMCode code;
 		public virtual IASMLocal GetResultLocal() => null;
@@ -318,15 +328,21 @@ namespace IL2X.Core
 	public class ASMInitObject : ASMObject
 	{
 		public ASMObject obj;
+		public FieldDefinition field;
 
 		public ASMInitObject(ASMObject obj)
 		: base(ASMCode.InitObject)
 		{
 			this.obj = obj;
 		}
-	}
+        public ASMInitObject(FieldDefinition field)
+        : base(ASMCode.InitObject)
+        {
+            this.field = field;
+        }
+    }
 
-	public class ASMReturnValue : ASMObject
+    public class ASMReturnValue : ASMObject
 	{
 		public ASMObject value;
 
@@ -374,6 +390,105 @@ namespace IL2X.Core
         {
             this.value = value;
             this.typeReference = typeReference;
+            this.resultLocal = resultLocal;
+        }
+
+        public override IASMLocal GetResultLocal() => resultLocal;
+        public override void SetResultLocal(IASMLocal local) => resultLocal = local;
+    }
+
+	public class ASMNewObj : ASMObject
+	{
+		public TypeDefinition type;
+		public MethodDefinition method;
+		public List<ASMObject> parameters = new();
+		public IASMLocal resultLocal;
+
+		public ASMNewObj(TypeDefinition type, MethodDefinition method, List<ASMObject> parameters, IASMLocal resultLocal)
+		: base(ASMCode.NewObj)
+		{
+			this.type = type;
+			this.method = method;
+			this.parameters = parameters;
+			this.resultLocal = resultLocal;
+		}
+
+        public override IASMLocal GetResultLocal() => resultLocal;
+        public override void SetResultLocal(IASMLocal local) => resultLocal = local;
+    }
+
+    public class ASMLoadStaticField : ASMObject
+    {
+        public FieldDefinition field;
+        public IASMLocal resultLocal;
+
+        public ASMLoadStaticField(FieldDefinition field, IASMLocal resultLocal)
+        : base(ASMCode.LoadStaticField)
+        {
+			this.field = field;
+            this.resultLocal = resultLocal;
+        }
+
+        public override IASMLocal GetResultLocal() => resultLocal;
+        public override void SetResultLocal(IASMLocal local) => resultLocal = local;
+    }
+
+    public class ASMStoreStaticField : ASMObject
+    {
+        public FieldDefinition field;
+		public ASMObject value;
+
+        public ASMStoreStaticField(FieldDefinition field, ASMObject value)
+        : base(ASMCode.StoreStaticField)
+        {
+            this.field = field;
+            this.value = value;
+        }
+    }
+
+    public class ASMStore : ASMObject
+	{
+		public ParameterDefinition parameter;
+		public TypeReference type;
+		public ASMObject value;
+		public ASMEvalStackLocal evalLocal;
+
+		public ASMStore(ParameterDefinition parameter, TypeReference type, ASMObject value)
+		: base(ASMCode.Store)
+		{
+			this.parameter = parameter;
+			this.type = type;
+			this.value = value;
+		}
+        public ASMStore(ASMEvalStackLocal evalLocal, TypeReference type, ASMObject value)
+        : base(ASMCode.Store)
+        {
+            this.evalLocal = evalLocal;
+            this.type = type;
+            this.value = value;
+        }
+    }
+
+    public class ASMThrow : ASMObject
+    {
+		public ASMObject exception;
+
+		public ASMThrow(ASMObject exception)
+		: base(ASMCode.Throw)
+		{
+			this.exception = exception;
+		}
+    }
+
+    public class ASMLocalloc : ASMObject
+    {
+        public ASMObject count;
+        public IASMLocal resultLocal;
+
+        public ASMLocalloc(ASMObject count, IASMLocal resultLocal)
+        : base(ASMCode.Localloc)
+        {
+            this.count = count;
             this.resultLocal = resultLocal;
         }
 

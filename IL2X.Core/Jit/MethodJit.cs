@@ -269,6 +269,7 @@ namespace IL2X.Core.Jit
 					}
 
                     case Code.Ldind_U1:
+					case Code.Conv_U1:
                     {
                         var p = StackPop();
 
@@ -280,6 +281,7 @@ namespace IL2X.Core.Jit
                     }
 
                     case Code.Ldind_U2:
+					case Code.Conv_U2:
 					{
 						var p = StackPop();
 
@@ -291,6 +293,8 @@ namespace IL2X.Core.Jit
 					}
 
                     case Code.Ldind_U4:
+					case Code.Conv_U:
+					case Code.Conv_U4:
                     {
                         var p = StackPop();
 
@@ -301,6 +305,7 @@ namespace IL2X.Core.Jit
                         break;
                     }
 
+                    case Code.Conv_I1:
                     case Code.Ldind_I1:
                     {
                         var p = StackPop();
@@ -313,6 +318,7 @@ namespace IL2X.Core.Jit
                     }
 
                     case Code.Ldind_I2:
+                    case Code.Conv_I2:
                     {
                         var p = StackPop();
 
@@ -324,11 +330,37 @@ namespace IL2X.Core.Jit
                     }
 
                     case Code.Ldind_I4:
+					case Code.Ldind_I:
+					case Code.Conv_I:
+                    case Code.Conv_I4:
                     {
                         var p = StackPop();
 
                         var evalVar = GetEvalStackVar(GetTypeSystem().Int32);
                         AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().Int32, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+					case Code.Ldind_I8:
+                    case Code.Conv_I8:
+					{
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().Int64);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().Int64, evalVar));
+                        StackPush(op, evalVar);
+
+                        break;
+                    }
+
+                    case Code.Conv_U8:
+                    {
+                        var p = StackPop();
+
+                        var evalVar = GetEvalStackVar(GetTypeSystem().UInt64);
+                        AddASMOp(new ASMCast(OperandToASMOperand(p.obj), GetTypeSystem().UInt64, evalVar));
                         StackPush(op, evalVar);
 
                         break;
@@ -378,6 +410,7 @@ namespace IL2X.Core.Jit
 					case Code.Ldarg_3: Ldarg_X(op, 3, true); break;
 					case Code.Ldarg:
 					case Code.Ldarg_S:
+					case Code.Ldarga_S:
 					{
 						if (op.Operand is short) Ldarg_X(op, (short)op.Operand, true);
 						else if (op.Operand is int) Ldarg_X(op, (int)op.Operand, true);
@@ -408,7 +441,31 @@ namespace IL2X.Core.Jit
 						break;
 					}
 
-					case Code.Sizeof:
+					case Code.Ldsfld:
+                    {
+                        if (op.Operand is FieldDefinition definition)
+                        {
+                            var evalVar = GetEvalStackVar(definition.FieldType);
+
+                            AddASMOp(new ASMLoadStaticField(definition, evalVar));
+                            StackPush(op, evalVar);
+                        }
+                        else throw new NotImplementedException("Ldsfld unsupported operand: " + op.Operand.GetType());
+
+                        break;
+                    }
+                    case Code.Ldsflda:
+                    {
+                        if (op.Operand is FieldDefinition definition)
+                        {
+                            StackPush(op, definition);
+                        }
+                        else throw new NotImplementedException("Ldsflda unsupported operand: " + op.Operand.GetType());
+
+                        break;
+                    }
+
+                    case Code.Sizeof:
 					{
 						var type = (TypeReference)op.Operand;
 						var t = this.type.module.assembly.solution.ResolveType(type, this.type, this);
@@ -432,7 +489,79 @@ namespace IL2X.Core.Jit
 						break;
 					}
 
-					case Code.Stfld:
+                    case Code.Stind_I1:
+                    {
+                        var value = StackPop();
+                        var address = StackPop();
+
+                        if (address.obj is ParameterDefinition parameter)
+                        {
+                            AddASMOp(new ASMStore(parameter, GetTypeSystem().Byte, OperandToASMOperand(value.obj)));
+                        }
+						else if(address.obj is ASMEvalStackLocal local)
+						{
+                            AddASMOp(new ASMStore(local, GetTypeSystem().Byte, OperandToASMOperand(value.obj)));
+                        }
+                        else
+                        {
+                            throw new NotImplementedException("Unknown stdind.i1 type: " + address.obj.ToString());
+                        }
+
+                        break;
+                    }
+
+                    case Code.Stind_I2:
+					{
+						var p = StackPop();
+						var p2 = StackPop();
+
+						if(p.obj is ParameterDefinition parameter)
+						{
+							AddASMOp(new ASMStore(parameter, GetTypeSystem().Int16, OperandToASMOperand(p2.obj)));
+                        }
+                        else
+						{
+                            throw new NotImplementedException("Unknown stdind.i2 type: " + p.obj.ToString());
+                        }
+
+                        break;
+                    }
+
+                    case Code.Stind_I4:
+                    {
+                        var p = StackPop();
+                        var p2 = StackPop();
+
+                        if (p.obj is ParameterDefinition parameter)
+                        {
+                            AddASMOp(new ASMStore(parameter, GetTypeSystem().Int32, OperandToASMOperand(p2.obj)));
+                        }
+                        else
+                        {
+                            throw new NotImplementedException("Unknown stdind.i4 type: " + p.obj.ToString());
+                        }
+
+                        break;
+                    }
+
+                    case Code.Stind_I8:
+                    {
+                        var p = StackPop();
+                        var p2 = StackPop();
+
+                        if (p.obj is ParameterDefinition parameter)
+                        {
+                            AddASMOp(new ASMStore(parameter, GetTypeSystem().Int64, OperandToASMOperand(p2.obj)));
+                        }
+                        else
+                        {
+                            throw new NotImplementedException("Unknown stdind.i8 type: " + p.obj.ToString());
+                        }
+
+                        break;
+                    }
+
+                    case Code.Stfld:
 					{
 						var itemRight = StackPop();
 						var self = StackPop();
@@ -443,6 +572,22 @@ namespace IL2X.Core.Jit
 						break;
 					}
 
+					case Code.Stsfld:
+					{
+						var p = StackPop();
+
+						if(op.Operand is FieldDefinition definition)
+						{
+							AddASMOp(new ASMStoreStaticField(definition, OperandToASMOperand(p.obj)));
+						}
+						else
+						{
+                            throw new NotImplementedException("Unknown stsfld type: " + op.Operand.GetType().ToString());
+                        }
+
+                        break;
+					}
+
 					case Code.Initobj:
 					{
 						var t = StackPop();
@@ -451,12 +596,23 @@ namespace IL2X.Core.Jit
 						{
 							int index = asmLocals.FindIndex(x => x.variable == v);
 							o = asmLocals[index];
-						}
-						else
+
+                            if (o == null)
+                            {
+                                throw new NotImplementedException("initobj: null value");
+                            }
+
+                            AddASMOp(new ASMInitObject(o));
+                        }
+                        else if(t.obj is FieldDefinition f)
+						{
+                            AddASMOp(new ASMInitObject(f));
+                        }
+                        else
 						{
 							throw new NotImplementedException("Unknown initobj type: " + t.obj.ToString());
 						}
-						AddASMOp(new ASMInitObject(o));
+
 						break;
 					}
 
@@ -615,6 +771,7 @@ namespace IL2X.Core.Jit
 					// invoke
 					// ===================================
 					case Code.Call:
+					case Code.Callvirt:
 					{
 						var methodInvoke = type.ResolveMethod((MethodReference)op.Operand);
 						var ttt = methodInvoke.GetType();
@@ -632,6 +789,30 @@ namespace IL2X.Core.Jit
 						}
 						AddASMOp(new ASMCallMethod(ASMCode.CallMethod, methodInvoke, returnVar, parameters));
 						if (!IsVoidType(methodInvoke.ReturnType)) StackPush(op, returnVar);
+						break;
+					}
+
+					case Code.Throw:
+					{
+						var p = StackPop();
+
+						AddASMOp(new ASMThrow(OperandToASMOperand(p.obj)));
+
+                        break;
+                    }
+
+					// ===================================
+					// memory
+					// ===================================
+					case Code.Localloc:
+					{
+						var count = StackPop();
+						var evalVar = GetEvalStackVar(GetTypeSystem().IntPtr);
+
+						AddASMOp(new ASMLocalloc(OperandToASMOperand(count.obj), evalVar));
+
+						StackPush(op, evalVar);
+
 						break;
 					}
 
@@ -661,6 +842,31 @@ namespace IL2X.Core.Jit
                         else
 						{
                             throw new NotImplementedException("IL instruction Isinst has unexpected parameter type: " + p.obj.GetType().Name);
+                        }
+
+                        break;
+                    }
+
+					case Code.Newobj:
+					{
+						if(op.Operand is MethodDefinition method)
+						{
+							var type = method.DeclaringType;
+
+							var parameters = new List<ASMObject>();
+
+							for(var i = 0; i < method.Parameters.Count; i++)
+							{
+								parameters.Insert(0, OperandToASMOperand(StackPop().obj));
+							}
+
+                            var evalVar = GetEvalStackVar(type);
+                            AddASMOp(new ASMNewObj(type, method, parameters, evalVar));
+                            StackPush(op, evalVar);
+						}
+						else
+						{
+                            throw new NotImplementedException("IL instruction Isinst has unexpected parameter type: " + op.Operand.GetType().Name);
                         }
 
                         break;
@@ -926,6 +1132,7 @@ namespace IL2X.Core.Jit
 				if (type.MetadataType == MetadataType.UInt64) return 3;
 				if (type.MetadataType == MetadataType.Single) return 4;
 				if (type.MetadataType == MetadataType.Double) return 5;
+				if (type.MetadataType == MetadataType.Pointer) return 6;
 				throw new NotImplementedException("Unsupported arithmatic type: " + type.ToString());
 			}
 			

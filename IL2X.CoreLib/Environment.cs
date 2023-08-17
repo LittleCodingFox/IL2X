@@ -5,11 +5,14 @@ namespace System
 {
 	public static class Environment
 	{
-		/*[NativeExtern(NativeTarget.C, "_putenv")]
+        public static string NewLine => "\r\n";// TODO: POSIX version
+        
+		/*
+		[NativeExtern(NativeTarget.C, "_putenv")]
 		private static unsafe extern int putenv(byte* _EnvString);
+		*/
 
-		public static string NewLine => "\r\n";// TODO: POSIX version
-
+        /*
 		public unsafe static void SetEnvironmentVariable(string variable, string value)
 		{
 			string envVar = variable + '=' + value;
@@ -19,5 +22,5 @@ namespace System
 			encoded[encodedCount - 1] = 0;
 			putenv(encoded);
 		}*/
-	}
+    }
 }

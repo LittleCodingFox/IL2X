@@ -6,7 +6,7 @@ namespace System
 	[NativeType(NativeTarget.C, "intptr_t", "stdint.h")]
 	public struct IntPtr
 	{
-		/*public static IntPtr Zero => new IntPtr();
+		public static IntPtr Zero => new IntPtr();
 		public static unsafe int Size => sizeof(void*);
 
 		[MethodImpl(MethodImplOptions.InternalCall)]
@@ -48,6 +48,6 @@ namespace System
 		public unsafe void* ToPointer()
 		{
 			return (void*)this;
-		}*/
+		}
 	}
 }
