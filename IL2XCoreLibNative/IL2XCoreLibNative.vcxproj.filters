@@ -1,0 +1,654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\__ForwardDeclares.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeExternAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeStringParamAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeStringType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeTarget.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeTypeAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\Microsoft_CodeAnalysis_EmbeddedAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Activator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ArgumentException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ArgumentOutOfRangeException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Array.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Attribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_AttributeTargets.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_AttributeUsageAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_BitConverter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Boolean.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Buffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Byte.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Char&amp;.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Char.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Collections_IEnumerable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Collections_IEnumerator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Console.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_DateTime.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Decimal.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Delegate.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Diagnostics_Debug.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_DllNotFoundException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Double.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Enum.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Environment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_EqualityComparer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Exception.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_FlagsAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_GC.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Guid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IDisposable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IndexOutOfRangeException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int16.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int64.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IntPtr.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_InvalidCastException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_File.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileAccess.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileMode.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileNotFoundException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileShare.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_IOException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_Path.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Math.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_MathF.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_MulticastDelegate.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_NotImplementedException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_NotSupportedException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Number.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Object.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ObsoleteAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ParamArrayAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCompanyAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyConfigurationAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCopyrightAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCultureAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyDelaySignAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyDescriptionAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyFileVersionAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyInformationalVersionAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyKeyFileAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyProductAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyTitleAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyTrademarkAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyVersionAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_DefaultMemberAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_MethodImplAttributes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_ExtensionAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_IsReadOnlyAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_MethodImplAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_MethodImplOptions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_RuntimeHelpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_CallingConvention.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_DllImportAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_LayoutKind.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_Marshal.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_OutAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_StructLayoutAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_UnmanagedFunctionPointerAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_UnmanagedType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_Versioning_TargetFrameworkAttribute.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_RuntimeType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_RuntimeTypeHandle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_SByte.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Single.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_String.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_Encoding.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_StandardEncoding.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_StringBuilder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Threading_Thread.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ThrowArgumentNullException.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Type.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt16.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt32.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt64.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UIntPtr.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ValueType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Void.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeExternAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeStringParamAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeStringType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\IL2X_NativeTypeAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\Microsoft_CodeAnalysis_EmbeddedAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Activator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ArgumentException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ArgumentOutOfRangeException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Attribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_AttributeTargets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_AttributeUsageAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_BitConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Boolean.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Byte.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Char&amp;.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Char.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Collections_IEnumerable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Collections_IEnumerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_DateTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Decimal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Delegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Diagnostics_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_DllNotFoundException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Double.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Enum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Environment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_EqualityComparer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_FlagsAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_GC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Guid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IDisposable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IndexOutOfRangeException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Int64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IntPtr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_InvalidCastException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileAccess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileNotFoundException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_FileShare.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_IOException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_IO_Path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_MathF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_MulticastDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_NotImplementedException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_NotSupportedException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Number.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ObsoleteAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ParamArrayAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCompanyAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyConfigurationAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCopyrightAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyCultureAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyDelaySignAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyDescriptionAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyFileVersionAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyInformationalVersionAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyKeyFileAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyProductAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyTitleAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyTrademarkAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_AssemblyVersionAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_DefaultMemberAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Reflection_MethodImplAttributes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_ExtensionAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_IsReadOnlyAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_MethodImplAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_MethodImplOptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_CompilerServices_RuntimeHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_CallingConvention.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_DllImportAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_LayoutKind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_Marshal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_OutAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_StructLayoutAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_UnmanagedFunctionPointerAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_InteropServices_UnmanagedType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Runtime_Versioning_TargetFrameworkAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_RuntimeType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_RuntimeTypeHandle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_SByte.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Single.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_String.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_Encoding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_StandardEncoding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Text_StringBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Threading_Thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ThrowArgumentNullException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt16.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UInt64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_UIntPtr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_ValueType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Output\IL2XOutput\IL2X_CoreLib\System_Void.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -59,10 +59,15 @@ namespace IL2X.Core.Emitters
                     // write native type declare
                     bool nativeTypesExist = false;
                     var nativeDefTypesSet = new HashSet<string>();
-                    var nativeHeadersSet = new HashSet<string>();
+                    var nativeHeadersSet = new HashSet<string>
+                    {
+                        "string",
+                    };
+
                     foreach (var type in module.allTypes)
                     {
-                        if (GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out string nativeType, out var nativeHeaders))
+                        if (GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out string nativeType, out var nativeHeaders) &&
+                            type.typeReference.IsPinned == false)
                         {
                             nativeTypesExist = true;
                             string typename = GetTypeFullName(type.typeReference);
@@ -177,7 +182,32 @@ namespace IL2X.Core.Emitters
         private void WriteRuntimeType(TypeJit type)
         {
             string typename = GetRuntimeTypeFullName(type.typeReference);
-            WriteLine($"class {typename}");
+            Write($"class {typename}");
+
+            var derived = new List<string>();
+
+            if(type.typeDefinition.HasInterfaces)
+            {
+                foreach(var i in type.typeDefinition.Interfaces)
+                {
+                    derived.Add(GetTypeFullName(i.InterfaceType));
+                }
+            }
+
+            if(type.typeDefinition.BaseType != null)
+            {
+                derived.Add(GetTypeFullName(type.typeDefinition.BaseType));
+            }
+
+            if(derived.Count > 0)
+            {
+                WriteLine($" : {string.Join(", ", derived)}");
+            }
+            else
+            {
+                WriteLine();
+            }
+
             WriteLine("{");
             WriteLine("public:");
             AddTab();
@@ -191,7 +221,7 @@ namespace IL2X.Core.Emitters
             // include value-type dependencies
             foreach (var d in type.dependencies)
             {
-                if (d.IsValueType || type.typeDefinition.IsEnum)
+                if (d.IsValueType || type.typeDefinition.IsEnum || type.typeDefinition.IsClass)
                 {
                     char s = Path.DirectorySeparatorChar;
                     if (d.Scope != type.typeReference.Scope) WriteLine($"#include \"..{s}{GetScopeName(d.Scope)}{s}{FormatTypeFilename(d.FullName)}.hpp\"");
@@ -224,6 +254,31 @@ namespace IL2X.Core.Emitters
                     else
                     {
                         WriteLine($"class {typename}");
+
+                        var derived = new List<string>();
+
+                        if (type.typeDefinition.HasInterfaces)
+                        {
+                            foreach (var i in type.typeDefinition.Interfaces)
+                            {
+                                derived.Add(GetTypeFullName(i.InterfaceType));
+                            }
+                        }
+
+                        if (type.typeDefinition.BaseType != null)
+                        {
+                            derived.Add(GetTypeFullName(type.typeDefinition.BaseType));
+                        }
+
+                        if (derived.Count > 0)
+                        {
+                            WriteLine($" : {string.Join(", ", derived)}");
+                        }
+                        else
+                        {
+                            WriteLine();
+                        }
+
                         WriteLine("{");
                         WriteLine("public:");
                     }
@@ -403,6 +458,64 @@ namespace IL2X.Core.Emitters
                 // write method
                 WriteLine();
                 WriteMethodSignature(method);
+
+                var constructors = new List<ASMCallMethod>();
+
+                while(method.asmOperations != null && method.asmOperations.Count > 0)
+                {
+                    var first = method.asmOperations.FirstOrDefault();
+
+                    if (first.code == ASMCode.CallMethod && first is ASMCallMethod callMethod && callMethod.method.Name.Contains(".ctor"))
+                    {
+                        constructors.Add(callMethod);
+
+                        method.asmOperations.RemoveFirst();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if(constructors.Count  > 0)
+                {
+                    WriteLine(" :");
+
+                    for(var i = 0; i < constructors.Count; i++)
+                    {
+                        var constructor = constructors[i];
+
+                        var result = new StringBuilder();
+
+                        result.Append($"{GetTypeFullName(constructor.method.DeclaringType)}(");
+
+                        int count = 0;
+
+                        foreach (var p in constructor.parameters)
+                        {
+                            if(p is ASMThisPtr)
+                            {
+                                continue;
+                            }
+
+                            result.Append(GetOperationValue(p));
+                            if (count != constructor.parameters.Count - 1) result.Append(", ");
+                            ++count;
+                        }
+
+                        result.Append(")");
+
+                        if(i + 1 < constructors.Count)
+                        {
+                            result.Append(",");
+                        }
+
+                        WriteTab(result.ToString());
+
+                        WriteLine();
+                    }
+                }
+
                 WriteLine();
                 WriteLine("{");
                 AddTab();

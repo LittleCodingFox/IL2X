@@ -248,3 +248,5 @@ ModelManifest.xml
 
 # 3rdParty
 !3rdParty/**
+
+Output/
