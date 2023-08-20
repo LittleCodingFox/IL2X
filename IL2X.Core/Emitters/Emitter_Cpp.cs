@@ -418,7 +418,7 @@ namespace IL2X.Core.Emitters
             {
                 Write(GetTypeReferenceName(method.methodReference.ReturnType));
                 Write(" ");
-                Write(GetMethodName(method.methodReference));
+                Write(GetMethodName(method.methodReference, true));
             }
             else
             {
@@ -992,7 +992,7 @@ namespace IL2X.Core.Emitters
                             result.Append($"{GetOperationValue(invokeOp.parameters.FirstOrDefault())}->");
                         }
 
-                        result.Append($"{GetMethodName(invokeOp.method)}(");
+                        result.Append($"{GetMethodName(invokeOp.method, invokeOp.method.HasThis == false)}(");
 
                         int count = 0;
                         foreach (var p in invokeOp.parameters)
@@ -1041,7 +1041,7 @@ namespace IL2X.Core.Emitters
 
         private string GetTypeReferenceName(TypeReference type)
         {
-            string result = GetTypeFullName(type).Replace("&", "");
+            string result = GetTypeFullName(type).Replace("&", "").Replace("*", "");
 
             if (!IsVoidType(type))
             {
@@ -1115,7 +1115,7 @@ namespace IL2X.Core.Emitters
             return name;
         }
 
-        private static string GetMethodName(MethodReference method)
+        private static string GetMethodName(MethodReference method, bool full)
         {
             string name = method.Name.Replace('.', '_');
             if (method.IsGenericInstance)
@@ -1130,7 +1130,14 @@ namespace IL2X.Core.Emitters
                 name += "_";
             }
 
-            return $"{GetTypeFullName(method.DeclaringType)}::{name}";
+            if(full)
+            {
+                return $"{GetTypeFullName(method.DeclaringType)}::{name}";
+            }
+            else
+            {
+                return name;
+            }
         }
 
         private string GetJumpIndexName(int jumpIndex)
