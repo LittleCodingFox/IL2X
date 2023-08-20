@@ -250,3 +250,4 @@ ModelManifest.xml
 !3rdParty/**
 
 Output/
+launchSettings.json

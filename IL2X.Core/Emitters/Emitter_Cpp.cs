@@ -101,7 +101,43 @@ namespace IL2X.Core.Emitters
                         {
                             string typename = GetTypeFullName(type.typeReference);
                             var field = type.typeDefinition.Fields[0];
-                            WriteLine($"#define {typename} {GetTypeFullName(field.FieldType)}");
+
+                            WriteLine($"enum class {typename} : {GetTypeFullName(field.FieldType)}");
+                            WriteLine("{");
+
+                            AddTab();
+
+                            for(var i = 1; i < type.typeDefinition.Fields.Count; i++)
+                            {
+                                var t = type.typeDefinition.Fields[i];
+
+                                if(t.HasConstant)
+                                {
+                                    WriteTab($"{t.Name} = {t.Constant}");
+                                }
+                                else
+                                {
+                                    WriteTab($"{t.Name}");
+                                }
+
+                                if(i + 1 < type.typeDefinition.Fields.Count)
+                                {
+                                    WriteLine(",");
+                                }
+                                else
+                                {
+                                    WriteLine();
+                                }
+                            }
+
+                            RemoveTab();
+
+                            WriteLine("};");
+
+                            if(module.enumTypes.IndexOf(type) < module.enumTypes.Count - 1)
+                            {
+                                WriteLine();
+                            }
                         }
                     }
 
@@ -113,11 +149,10 @@ namespace IL2X.Core.Emitters
                         WriteLine("class IL2X_RuntimeTypeBase");
                         WriteLine("{");
                         AddTab();
-                        WriteLineTab($"virtual ~IL2X_RuntimeTypeBase();");
-                        AddTab();
+                        WriteLineTab($"virtual ~IL2X_RuntimeTypeBase() {{}};");
                         WriteLineTab($"{GetTypeFullName(typeJit.typeReference)}* Type;");
-                        WriteLineTab("virtual std::string Name();");
-                        WriteLineTab("virtual std::string FullName();");
+                        WriteLineTab("virtual std::string Name() { return \"RuntimeTypeBase\"; }");
+                        WriteLineTab("virtual std::string FullName() { return \"IL2X.RuntimeTypeBase\"; }");
                         RemoveTab();
                         WriteLine("};");
                     }
