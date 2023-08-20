@@ -214,43 +214,6 @@ namespace IL2X.Core.Emitters
             }
         }
 
-        private void WriteRuntimeType(TypeJit type)
-        {
-            string typename = GetRuntimeTypeFullName(type.typeReference);
-            Write($"class {typename}");
-
-            var derived = new List<string>();
-
-            if(type.typeDefinition.HasInterfaces)
-            {
-                foreach(var i in type.typeDefinition.Interfaces)
-                {
-                    derived.Add(GetTypeFullName(i.InterfaceType));
-                }
-            }
-
-            if(type.typeDefinition.BaseType != null)
-            {
-                derived.Add(GetTypeFullName(type.typeDefinition.BaseType));
-            }
-
-            if(derived.Count > 0)
-            {
-                WriteLine($" : {string.Join(", ", derived)}");
-            }
-            else
-            {
-                WriteLine();
-            }
-
-            WriteLine("{");
-            WriteLine("public:");
-            AddTab();
-            WriteLineTab("IL2X_RuntimeTypeBase RuntimeTypeBase;");// TODO: write special value-type that contains BaseClass, Name & Fullname
-            RemoveTab();
-            WriteLine("};");
-        }
-
         private void WriteTypeDefinition(TypeJit type)
         {
             // include value-type dependencies
@@ -326,9 +289,7 @@ namespace IL2X.Core.Emitters
 
                     var publicMethods = type.methods.Where(x => x.methodDefinition.IsPublic).ToList();
                     var privateMethods = type.methods.Where(x => x.methodDefinition.IsPrivate).ToList();
-                    var protectedMethods = type.methods.Where(x => x.methodDefinition.Attributes.HasFlag(MethodAttributes.Family) &&
-                        x.methodDefinition.IsPrivate == false &&
-                        x.methodDefinition.IsPublic == false).ToList();
+                    var protectedMethods = type.methods.Where(x => publicMethods.Contains(x) == false && privateMethods.Contains(x) == false).ToList();
 
                     void Handle(List<MethodJit> methods)
                     {
@@ -377,9 +338,7 @@ namespace IL2X.Core.Emitters
         {
             var publicFields = type.fields.Where(x => x.field.IsPublic).ToList();
             var privateFields = type.fields.Where(x => x.field.IsPrivate).ToList();
-            var protectedFields = type.fields.Where(x => x.field.Attributes.HasFlag(FieldAttributes.Family) &&
-                x.field.IsPrivate == false &&
-                x.field.IsPublic == false).ToList();
+            var protectedFields = type.fields.Where(x => publicFields.Contains(x) == false && privateFields.Contains(x) == false).ToList();
 
             void Handle(List<FieldJit> fields)
             {
@@ -422,22 +381,24 @@ namespace IL2X.Core.Emitters
             }
         }
 
-        private void WriteTypeMethodDefinition(TypeJit type)
-        {
-            // include all dependencies
-            foreach (var d in type.dependencies)
-            {
-                char s = Path.DirectorySeparatorChar;
-                if (d.Scope != type.typeReference.Scope) WriteLine($"#include \"..{s}{GetScopeName(d.Scope)}{s}{FormatTypeFilename(d.FullName)}.hpp\"");
-                else WriteLine($"#include \"{FormatTypeFilename(d.FullName)}.hpp\"");
-            }
-        }
-
         private void WriteMethodDeclarationSignature(MethodJit method)
         {
+            if(method.methodDefinition.IsStatic && method.methodDefinition.IsConstructor == false)
+            {
+                WriteTab("static ");
+            }
+
             if(method.methodDefinition.IsConstructor == false)
             {
-                WriteTab(GetTypeReferenceName(method.methodReference.ReturnType));
+                if(method.methodDefinition.IsStatic)
+                {
+                    Write(GetTypeReferenceName(method.methodReference.ReturnType));
+                }
+                else
+                {
+                    WriteTab(GetTypeReferenceName(method.methodReference.ReturnType));
+                }
+
                 Write(" ");
                 Write(GetMethodDeclarationName(method.methodReference));
             }
@@ -487,6 +448,11 @@ namespace IL2X.Core.Emitters
         {
             foreach (var method in type.methods)
             {
+                if(method.methodDefinition.IsNative || method.methodDefinition.IsInternalCall)
+                {
+                    continue;
+                }
+
                 // load debug info if avaliable
                 if (activeModule.module.symbolReader != null) activemethodDebugInfo = activeModule.module.symbolReader.Read(method.methodDefinition);
 
@@ -1020,10 +986,22 @@ namespace IL2X.Core.Emitters
                     {
                         var invokeOp = (ASMCallMethod)op;
                         var result = new StringBuilder();
+
+                        if(invokeOp.method.HasThis)
+                        {
+                            result.Append($"{GetOperationValue(invokeOp.parameters.FirstOrDefault())}->");
+                        }
+
                         result.Append($"{GetMethodName(invokeOp.method)}(");
+
                         int count = 0;
                         foreach (var p in invokeOp.parameters)
                         {
+                            if(invokeOp.method.HasThis)
+                            {
+                                continue;
+                            }
+
                             result.Append(GetOperationValue(p));
                             if (count != invokeOp.parameters.Count - 1) result.Append(", ");
                             ++count;
@@ -1063,7 +1041,8 @@ namespace IL2X.Core.Emitters
 
         private string GetTypeReferenceName(TypeReference type)
         {
-            string result = GetTypeFullName(type);
+            string result = GetTypeFullName(type).Replace("&", "");
+
             if (!IsVoidType(type))
             {
                 while (!type.IsValueType)
@@ -1075,6 +1054,7 @@ namespace IL2X.Core.Emitters
                     if (type == lastType) break;
                 }
             }
+
             return result;
         }
 
@@ -1119,6 +1099,7 @@ namespace IL2X.Core.Emitters
         private static string GetMethodDeclarationName(MethodReference method)
         {
             string name = method.Name.Replace('.', '_');
+
             if (method.IsGenericInstance)
             {
                 var genericMethod = (GenericInstanceMethod)method;
@@ -1131,7 +1112,7 @@ namespace IL2X.Core.Emitters
                 name += "_";
             }
 
-            return $"{name}";
+            return name;
         }
 
         private static string GetMethodName(MethodReference method)
