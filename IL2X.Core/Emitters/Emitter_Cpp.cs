@@ -162,6 +162,12 @@ namespace IL2X.Core.Emitters
             // write header type-def-field file
             foreach (var type in module.allTypes)
             {
+                if ((GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out _, out _) ||
+                    type.typeDefinition.IsEnum) && type.methods.Count == 0)
+                {
+                    continue;
+                }
+
                 string filename = FormatTypeFilename(type.typeReference.FullName);
                 using (var stream = new FileStream(Path.Combine(outputDirectory, filename + ".hpp"), FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (var writer = new StreamWriter(stream))
@@ -180,6 +186,12 @@ namespace IL2X.Core.Emitters
             // write code file
             foreach (var type in module.allTypes)
             {
+                if ((GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out _, out _) ||
+                    type.typeDefinition.IsEnum) && type.methods.Count == 0)
+                {
+                    continue;
+                }
+
                 string filename = FormatTypeFilename(type.typeReference.FullName);
                 using (var stream = new FileStream(Path.Combine(outputDirectory, filename + ".cpp"), FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (var writer = new StreamWriter(stream))
@@ -232,11 +244,8 @@ namespace IL2X.Core.Emitters
 
             string typename = GetTypeFullName(type.typeReference);
 
-            if (GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out _, out _))
-            {
-                WriteLine("/* Defined in '__ForwardDeclared.hpp' */");
-            }
-            else if (type.typeDefinition.IsEnum)
+            if (GetNativeTypeAttributeInfo(NativeTarget.C, type.typeDefinition, out _, out _) ||
+                type.typeDefinition.IsEnum)
             {
                 WriteLine("/* Defined in '__ForwardDeclared.hpp' */");
             }
